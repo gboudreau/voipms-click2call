@@ -30,6 +30,7 @@ if (isset($_POST['click2call'])) {
         <title>voip.ms Click2Call</title>
     </head>
     <body>
+    <a href="https://github.com/gboudreau/voipms-click2call" target="_blank"><img style="position: absolute; top: 0; right: 0; border: 0;" src="img/forkme_left_red_aa0000.png" alt="Fork me on GitHub"></a>
     <h1>voip.ms Click2Call Script</h1>
     <?php
 
