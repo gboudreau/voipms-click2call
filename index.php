@@ -178,6 +178,33 @@ echo "[OK]$EOL";
 
 change_filtering($filter_to_edit, "cb:$callback_to_use");
 
+if (strlen($filter_callerid) == 10) {
+    $filter_callerid = "1$filter_callerid";
+
+    echo "Looking for CallerID Filter for $filter_callerid in account... ";
+    $filter_to_edit = get_filter_to_edit();
+    if ($filter_to_edit === FALSE) {
+        echo " [NOT FOUND]$EOL";
+        echo "Creating CallerID Filter... ";
+        $result = voipms_api_call('setCallerIDFiltering', array(
+            'callerid' => $filter_callerid,
+            'did' => $config->did_number,
+            'routing' => "cb:$callback_to_use"
+        ));
+        if ($result->status != 'success') {
+            die("[ERROR] $result->status$EOL");
+        }
+        $filter_to_edit = get_filter_to_edit();
+        if ($filter_to_edit === FALSE) {
+            die("[ERROR] Couldn't create new CallerID filter for $filter_callerid. See above for possible errors.$EOL");
+        }
+    }
+    echo "[OK]$EOL";
+
+    change_filtering($filter_to_edit, "cb:$callback_to_use");
+}
+
+
 if (isset($use_google_voice) && $use_google_voice) {
     $cmd = "python google-voice-click2call.py " . escapeshellarg("t:$config->did_number");
     passthru($cmd);
